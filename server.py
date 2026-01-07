@@ -276,6 +276,24 @@ def run_initialization_background():
     thread.start()
 
 if __name__ == "__main__":
+    import os
     logger.info("Starting MCP server with background initialization...")
     run_initialization_background()
-    mcp.run(transport='stdio')
+
+    # Use HTTP transport for deployment, stdio for local dev
+    transport = os.getenv("MCP_TRANSPORT", "stdio")
+
+    if transport == "http":
+        import uvicorn
+        host = os.getenv("MCP_HOST", "0.0.0.0")
+        port = int(os.getenv("MCP_PORT", "8000"))
+        logger.info(f"Starting Streamable HTTP server on {host}:{port}/mcp")
+        uvicorn.run(mcp.streamable_http_app(), host=host, port=port)
+    elif transport == "sse":
+        import uvicorn
+        host = os.getenv("MCP_HOST", "0.0.0.0")
+        port = int(os.getenv("MCP_PORT", "8000"))
+        logger.info(f"Starting SSE server on {host}:{port}/sse")
+        uvicorn.run(mcp.sse_app(), host=host, port=port)
+    else:
+        mcp.run(transport="stdio")

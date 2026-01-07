@@ -11,4 +11,5 @@ dependencies = [
     "mcp[cli]>=1.11.0",
     "pypdf>=5.8.0",
     "pyyaml>=6.0.2",
+    "uvicorn>=0.30.0",
 ]

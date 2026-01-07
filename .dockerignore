@@ -1,0 +1,13 @@
+.git
+.gitignore
+.idea
+__pycache__
+*.pyc
+*.pyo
+.env
+.env.*
+downloads/
+logs/
+*.log
+nccn_guidelines_index.yaml
+.venv
